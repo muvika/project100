@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+        }
+
+        .header {
+            background: #4a6cf7;
+            color: white;
+            padding: 15px 30px;
+            font-size: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #4a6cf7;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .info {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 3px;
+        }
+
+        .status {
+            margin-top: 8px;
+            font-size: 13px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .progress {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .logout {
+            display: block;
+            width: 120px;
+            text-align: center;
+            margin: 30px auto;
+            padding: 10px;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .logout:hover {
+            background: #b52a37;
+        }
+
+        .empty {
+            text-align: center;
+            color: gray;
+            margin-top: 40px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="header">
+    Welcome {{ request.user.username }}
+</div>
+
+<div class="container">
+
+    {% for task in tasks %}
+        <div class="card">
+            <div class="title">{{ task.title }}</div>
+            <div class="info">Project: {{ task.project.name }}</div>
+            <div class="info">Developer: {{ task.developer.user.username }}</div>
+
+            {% if task.status == "Pending" %}
+                <span class="status pending">Pending</span>
+            {% elif task.status == "In Progress" %}
+                <span class="status progress">In Progress</span>
+            {% else %}
+                <span class="status completed">Completed</span>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p class="empty">No data found</p>
+    {% endfor %}
+
+</div>
+
+<a href="{% url 'logout' %}" class="logout">Logout</a>
+
+</body>
+</html>
